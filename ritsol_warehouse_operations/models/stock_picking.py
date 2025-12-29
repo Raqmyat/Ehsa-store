@@ -1,4 +1,5 @@
 from odoo import models, fields, api
+from odoo.exceptions import UserError
 
 
 class StockPicking(models.Model):
@@ -6,38 +7,41 @@ class StockPicking(models.Model):
 
     location_dest_ids = fields.Many2many(
         'stock.location',
-        'stock_picking_location_dest_rel',
+        'stock_picking_multi_dest_rel',
         'picking_id',
         'location_id',
         string='Destination Locations',
-        domain="[('usage', '=', 'internal')]"
+        domain=[('usage', '=', 'internal')],
     )
 
-    @api.model
-    def create(self, vals):
-        # نقل القيمة من location_dest_id إلى location_dest_ids
-        if 'location_dest_id' in vals and vals.get('location_dest_id'):
-            if 'location_dest_ids' not in vals or not vals.get('location_dest_ids'):
-                vals['location_dest_ids'] = [(6, 0, [vals['location_dest_id']])]
-        return super(StockPicking, self).create(vals)
-
-    def write(self, vals):
-        # نقل القيمة من location_dest_id إلى location_dest_ids
-        if 'location_dest_id' in vals and vals.get('location_dest_id'):
-            if 'location_dest_ids' not in vals:
-                vals['location_dest_ids'] = [(6, 0, [vals['location_dest_id']])]
-        return super(StockPicking, self).write(vals)
-
     def button_validate(self):
-        """Override للـ validation"""
+        """
+        Create one stock.move per destination location
+        """
         for picking in self:
             if picking.location_dest_ids:
-                # تحديث الحقل الأصلي بأول location
-                picking.sudo().write({
-                    'location_dest_id': picking.location_dest_ids[0].id
-                })
-                # تحديث كل الـ moves
-                for move in picking.move_ids:
-                    move.location_dest_id = picking.location_dest_ids[0].id
+                moves = picking.move_ids_without_package
+                if not moves:
+                    continue
 
-        return super(StockPicking, self).button_validate()
+                dest_count = len(picking.location_dest_ids)
+                if dest_count == 0:
+                    continue
+
+                # create new moves
+                for location in picking.location_dest_ids:
+                    for move in moves:
+                        self.env['stock.move'].create({
+                            'name': move.name,
+                            'product_id': move.product_id.id,
+                            'product_uom': move.product_uom.id,
+                            'product_uom_qty': move.product_uom_qty / dest_count,
+                            'location_id': move.location_id.id,
+                            'location_dest_id': location.id,
+                            'picking_id': picking.id,
+                        })
+
+                # remove original moves
+                moves.unlink()
+
+        return super().button_validate()

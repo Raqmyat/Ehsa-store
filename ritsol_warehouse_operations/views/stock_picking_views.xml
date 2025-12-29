@@ -1,37 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <record id="view_picking_form_inherit_ritsol" model="ir.ui.view">
-        <field name="name">stock.picking.form.inherit.ritsol</field>
+
+    <record id="view_picking_form_multi_dest" model="ir.ui.view">
+        <field name="name">stock.picking.form.multi.dest</field>
         <field name="model">stock.picking</field>
         <field name="inherit_id" ref="stock.view_picking_form"/>
         <field name="arch" type="xml">
 
-            <!-- استبدال حقل Destination Location -->
-            <xpath expr="//field[@name='location_dest_id']" position="replace">
+            <!-- Hide original destination -->
+            <xpath expr="//field[@name='location_dest_id']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+
+            <!-- Add multi destination -->
+            <xpath expr="//field[@name='location_dest_id']" position="after">
                 <field name="location_dest_ids"
                        widget="many2many_tags"
-                       string="Destination Location"
-                       options="{'no_create': True}"
-                       domain="[('usage', '=', 'internal')]"
-                       required="1"/>
+                       options="{'no_create': True}"/>
             </xpath>
 
         </field>
     </record>
 
-    <!-- للـ tree view أيضاً -->
-<!--    <record id="view_picking_tree_inherit_ritsol" model="ir.ui.view">-->
-<!--        <field name="name">stock.picking.tree.inherit.ritsol</field>-->
-<!--        <field name="model">stock.picking</field>-->
-<!--        <field name="inherit_id" ref="stock.view_picking_tree"/>-->
-<!--        <field name="arch" type="xml">-->
-<!--            -->
-<!--            <xpath expr="//field[@name='location_dest_id']" position="replace">-->
-<!--                <field name="location_dest_ids" -->
-<!--                       widget="many2many_tags"-->
-<!--                       optional="show"/>-->
-<!--            </xpath>-->
-<!--            -->
-<!--        </field>-->
-<!--    </record>-->
 </odoo>
