@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <record id="action_multi_location_transfer" model="ir.actions.act_window">
+        <field name="name">Multi Location Internal Transfer</field>
+        <field name="res_model">multi.location.transfer.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <menuitem
+        id="menu_multi_location_transfer"
+        name="Multi Location Transfer"
+        parent="stock.menu_stock_warehouse_mgmt"
+        action="action_multi_location_transfer"
+        sequence="30"
+    />
+
+</odoo>
