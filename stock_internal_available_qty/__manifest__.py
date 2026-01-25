@@ -13,6 +13,7 @@ When creating Internal Transfers.
     'depends': ['stock','sale','purchase'],
     'data': [
         'views/stock_move_line_view.xml',
+        'views/report_stock_picking.xml',
     ],
     'installable': True,
     'application': False,
