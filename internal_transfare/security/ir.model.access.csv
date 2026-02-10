@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_multi_location_transfer_wizard,multi.location.transfer.wizard,model_multi_location_transfer_wizard,,1,1,1,1
+access_multi_location_transfer_line,multi.location.transfer.line,model_multi_location_transfer_line,,1,1,1,1

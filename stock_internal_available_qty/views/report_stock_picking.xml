@@ -1,0 +1,35 @@
+<odoo>
+    <template id="report_stock_picking_inherit_internal"
+              inherit_id="stock.report_picking">
+        <!--        <xpath expr="//h1[@t-field='o.name']" position="before">-->
+        <!--            <div class="float-end mt-2"-->
+        <!--                 t-if="o.picking_type_id.code == 'internal'">-->
+        <!--                <h4 style="font-weight: bold;">-->
+        <!--                    تحويل داخلى بين المخازن-->
+        <!--                </h4>-->
+        <!--            </div>-->
+        <!--        </xpath>-->
+        <xpath expr="//div[contains(@class,'row') and contains(@class,'mt16') and contains(@class,'mb16')]/div[not(@class)]"
+               position="inside">
+
+            <div class="float-end mt-2"
+                 t-if="o.picking_type_id.code == 'internal'">
+                <h4 style="font-weight: bold;">
+                    تحويل داخلى بين المخازن
+                </h4>
+            </div>
+
+        </xpath>
+        <!-- From header -->
+        <xpath expr="//th[@name='th_from']"
+               position="attributes">
+            <attribute name="class">text-end</attribute>
+        </xpath>
+
+        <!-- To header -->
+        <xpath expr="//th[@name='th_to']"
+               position="attributes">
+            <attribute name="class">text-end</attribute>
+        </xpath>
+    </template>
+</odoo>
