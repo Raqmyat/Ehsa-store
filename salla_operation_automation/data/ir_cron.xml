@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="ir_cron_salla_operation_automation" model="ir.cron">
+        <field name="name">Salla Operation Automation: Process Orders</field>
+        <field name="model_id" ref="salla_operation_automation.model_multi_channel_sale"/>
+        <field name="state">code</field>
+        <field name="code">model.action_sync_salla_orders_status()</field>
+        <field name="active" eval="True"/>
+        <field name="interval_number">1</field>
+        <field name="interval_type">hours</field>
+    </record>
+
+    <record id="ir_cron_salla_inventory_global_sync" model="ir.cron">
+        <field name="name">Salla: Global Inventory Sync (All Products)</field>
+        <field name="model_id" ref="salla_operation_automation.model_multi_channel_sale"/>
+        <field name="state">code</field>
+        <field name="code">model.action_sync_all_inventory_to_salla()</field>
+        <field name="active" eval="True"/>
+        <field name="interval_number">1</field>
+        <field name="interval_type">weeks</field>
+    </record>
+
+    <record id="ir_cron_fetch_salla_branches" model="ir.cron">
+        <field name="name">Salla: Auto-Fetch Branches</field>
+        <field name="model_id" ref="salla_operation_automation.model_multi_channel_sale"/>
+        <field name="state">code</field>
+        <field name="code">model._cron_action_fetch_salla_branches()</field>
+        <field name="active" eval="False"/>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+    </record>
+</odoo>

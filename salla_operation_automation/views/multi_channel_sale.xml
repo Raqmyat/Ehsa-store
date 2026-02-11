@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_multi_channel_sale_form_inherit" model="ir.ui.view">
+        <field name="name">multi.channel.sale.form.inherit</field>
+        <field name="model">multi.channel.sale</field>
+        <field name="inherit_id" ref="odoo_multi_channel_sale.multi_channel_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='crons']" position="inside">
+
+                <div class="row mt16 o_settings_container">
+                    <div class="col-12 col-lg-6 o_setting_box">
+                        <div class="o_setting_left_pane">
+                            <field name="sync_order_status_cron"/>
+                        </div>
+                        <div class="o_setting_right_pane">
+                            <label string="Enable Salla Order Status Sync" for="sync_order_status_cron"/>
+                            <div class="text-muted">
+                                Automatically update Odoo order status from Salla
+                            </div>
+                            <div class="mt8" invisible="not sync_order_status_cron">
+                                <button name="open_salla_automation_cron_views"
+                                        string="→ Configure Cron"
+                                        type="object"
+                                        class="oe_link"
+                                        context="{'cron_xml_id': 'ir_cron_salla_operation_automation'}"/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-lg-6 o_setting_box">
+                        <div class="o_setting_left_pane">
+                            <field name="sync_inventory_global_cron"/>
+                        </div>
+                        <div class="o_setting_right_pane">
+                            <label string="Enable Weekly Inventory Sync" for="sync_inventory_global_cron"/>
+                            <div class="text-muted">
+                                Global sync for all product quantities (Weekly)
+                            </div>
+                            <div class="mt8" invisible="not sync_inventory_global_cron">
+                                <button name="open_salla_automation_cron_views"
+                                        string="→ Configure Cron"
+                                        type="object"
+                                        class="oe_link"
+                                        context="{'cron_xml_id': 'ir_cron_salla_inventory_global_sync'}"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </xpath>
+        </field>
+    </record>
+</odoo>
