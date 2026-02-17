@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2015-Present Webkul Software Pvt. Ltd. (<https://webkul.com/>) -->
+<!-- See LICENSE file for full copyright and licensing details. -->
+<!--"License URL :<https://store.webkul.com/license.html/>" -->
+<odoo>
+	<data>
+		<record id="salla_instance_view_form" model="ir.ui.view">
+			<field name="name">multi.channel.sale.from</field>
+			<field name="model">multi.channel.sale</field>
+			<field name="inherit_id" ref="odoo_multi_channel_sale.multi_channel_view_form"/>
+			<field name="type">form</field>
+			<field name="arch" type="xml">
+				<xpath expr="//page[@name='credentials']" position="attributes">
+					<attribute name="invisible">False</attribute>
+					<attribute name="invisible">channel == 'salla'</attribute>
+				</xpath>
+				
+				<xpath expr="//button[@name='test_connection']" position="before">
+					<button
+						name  ="connect_to_salla"
+						groups="odoo_multi_channel_sale.group_multi_channel_admin"
+						string="Connect Salla"
+						title ="Connect Salla, Click to create connection with salla"
+						type  ="object"
+						class ="oe_highlight"
+						invisible ="state == 'validate' or channel != 'salla'"
+					/>
+				</xpath>
+				<field name="channel" position="after">
+					<group invisible="channel != 'salla'">
+						<field string="Salla Store Name" name="salla_store_name" readonly="1"/>
+					</group>
+				</field>
+			</field>
+		</record>
+
+		<record id="salla_instance_view_kanban" model="ir.ui.view">
+			<field name="name">multi.channel.sale.kanban</field>
+			<field name="model">multi.channel.sale</field>
+			<field name="inherit_id" ref="odoo_multi_channel_sale.multi_channel_view_kanban"/>
+			<field name="arch" type="xml">
+				<xpath expr="//div[hasclass('o_kanban_card_content')]" position="inside">
+					<div class="o_kanban_primary_left" >
+						<div t-if="record.channel.value == 'Salla'" style="color:rgb(162, 70, 137)">
+							<center>
+								<img
+									src="/odoo_salla_integration/static/description/thumbnail.png"
+									alt="salla_logo"
+									style="margin-left: 70px;"
+									height="160" width="160"
+								/>
+								<h3 style="margin-left: 70px;">
+									<t t-esc="record.name.value"/>
+								</h3>
+							</center>
+						</div>
+					</div>
+				</xpath>
+			</field>
+		</record>
+	</data>
+</odoo>
