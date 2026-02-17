@@ -22,6 +22,7 @@ Features:
     'depends': ['product', 'stock'],
     'data': [
         'security/ir.model.access.csv',
+        'views/force_standard_price_views.xml',
         'views/product_template_views.xml',
         'views/product_product_views.xml',
         'wizard/fix_salla_product_cost_views.xml',
