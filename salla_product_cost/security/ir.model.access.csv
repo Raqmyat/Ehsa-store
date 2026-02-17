@@ -1,3 +1,4 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_product_template_salla_cost,access.product.template.salla.cost,product.model_product_template,base.group_user,1,1,1,0
 access_product_product_salla_cost,access.product.product.salla.cost,product.model_product_product,base.group_user,1,1,1,0
+access_fix_salla_product_cost,access.fix.salla.product.cost,model_fix_salla_product_cost,base.group_user,1,1,1,1

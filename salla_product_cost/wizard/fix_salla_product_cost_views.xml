@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Wizard Form View -->
+    <record id="view_fix_salla_product_cost_wizard" model="ir.ui.view">
+        <field name="name">fix.salla.product.cost.wizard.form</field>
+        <field name="model">fix.salla.product.cost</field>
+        <field name="arch" type="xml">
+            <form string="إصلاح تكلفة منتجات Salla">
+                <group>
+                    <group>
+                        <field name="product_count" readonly="1"/>
+                        <field name="default_cost"/>
+                    </group>
+                </group>
+                <footer>
+                    <button name="action_fix_products" 
+                            string="إصلاح المنتجات (Templates)" 
+                            type="object" 
+                            class="btn-primary"/>
+                    <button name="action_fix_variants" 
+                            string="إصلاح المتغيرات (Variants)" 
+                            type="object" 
+                            class="btn-primary"/>
+                    <button string="إلغاء" special="cancel" class="btn-secondary"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!-- Wizard Action -->
+    <record id="action_fix_salla_product_cost" model="ir.actions.act_window">
+        <field name="name">إصلاح تكلفة منتجات Salla</field>
+        <field name="res_model">fix.salla.product.cost</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <!-- Menu Item -->
+    <menuitem id="menu_fix_salla_product_cost"
+              name="إصلاح تكلفة Salla"
+              parent="stock.menu_stock_config_settings"
+              action="action_fix_salla_product_cost"
+              sequence="100"/>
+</odoo>
