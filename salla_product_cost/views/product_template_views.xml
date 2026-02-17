@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="product_template_form_view_salla_cost" model="ir.ui.view">
+        <field name="name">product.template.form.salla.cost</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_only_form_view"/>
+        <field name="arch" type="xml">
+            <!-- إضافة الحقل بعد حقل السعر مباشرة -->
+            <xpath expr="//field[@name='supplier_taxes_id']" position="after">
+                <field name="x_salla_cost" 
+                       string="Salla Cost" 
+                       widget="monetary"
+                       options="{'currency_field': 'currency_id'}"
+                       class="oe_inline"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>
