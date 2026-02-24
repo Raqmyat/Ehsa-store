@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+    <t t-name="pos_fixed_discount.ControlButtons" t-inherit="point_of_sale.ControlButtons" t-inherit-mode="extension" xml:space="preserve">
+        <xpath expr="//div[hasclass('control-buttons-modal')]" position="inside">
+            <button class="btn btn-secondary btn-lg py-5" t-on-click="() => this.clickFixedDiscount()">
+                <i class="fa fa-tag me-1" role="img" aria-label="Fixed Discount" title="Fixed Discount" />
+                Fixed Discount
+            </button>
+        </xpath>
+    </t>
+</templates>
