@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+    <t t-inherit="point_of_sale.OrderReceipt" t-inherit-mode="extension">
+        <xpath expr="//div[hasclass('pos-receipt')]" position="replace">
+            <div class="pos-receipt pos-receipt-sa p-2">
+                <!-- Header Title -->
+                <div class="text-center mb-1">
+                    <div class="header-title" style="font-size: 1.4em;">فاتورة ضريبية مبسطة</div>
+                    <div class="header-order" t-esc="props.data.name"/>
+                </div>
+
+                <div class="store-info text-center mt-2">
+                    <div class="d-flex justify-content-center align-items-center mb-2" style="gap: 10px;">
+                        <div class="text-end" style="flex: 1;">
+                            <div class="fw-bolder" style="font-size: 1.2em;" t-esc="props.data.headerData.company.name"/>
+                            <div t-esc="props.data.headerData.company.address || ''"/>
+                            <div t-if="props.data.headerData.cashier">الكاشير - <t t-esc="props.data.headerData.cashier"/></div>
+                            <div style="font-size: 0.9em;"><t t-esc="props.data.date"/></div>
+                        </div>
+                        <t t-if="props.data.headerData.company.id">
+                             <img t-attf-src="/web/image?model=res.company&amp;id={{props.data.headerData.company.id}}&amp;field=logo" 
+                                  class="pos-receipt-logo" 
+                                  style="width: 70px; height: 70px; object-fit: contain; border-radius: 5px;"/>
+                        </t>
+                    </div>
+                </div>
+
+                <!-- Info Table (2x2) -->
+                <table class="info-table mt-3">
+                    <tr>
+                        <td>
+                            <span class="label">الرقم الضريبي</span>
+                            <div class="fw-bold" t-esc="props.data.headerData.company.vat || 'N/A'"/>
+                        </td>
+                        <td>
+                            <span class="label">اسم البائع</span>
+                            <div class="fw-bold" t-esc="props.data.headerData.company.name"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span class="label">اسم العميل</span>
+                            <div class="fw-bold" t-esc="props.data.headerData.partner?.name || 'عميل نقدي'"/>
+                        </td>
+                        <td>
+                            <span class="label">رقم العميل</span>
+                            <div class="fw-bold" t-esc="props.data.headerData.partner?.phone || props.data.headerData.partner?.mobile || 'N/A'"/>
+                        </td>
+                    </tr>
+                </table>
+
+                <!-- Order Lines Header -->
+                <div class="d-flex border-bottom border-dark pb-1 mb-1 fw-bold" style="font-size: 0.85em;">
+                    <div style="flex: 2;">اسم المنتج</div>
+                    <div style="flex: 1; text-align: center;">السعر</div>
+                    <div style="flex: 1; text-align: left;">الإجمالي</div>
+                </div>
+
+                <!-- Order Lines -->
+                <div class="order-lines">
+                    <t t-foreach="props.data.orderlines" t-as="line" t-key="line.id">
+                        <div class="line-item py-1" style="border-bottom: 1px dotted #ccc;">
+                            <div class="qty-name">
+                                <span class="product-name" style="font-size: 1.05em;">
+                                    <t t-esc="line.qty"/>x <t t-esc="line.product_id?.display_name"/>
+                                </span>
+                                <t t-if="line.customerNote">
+                                    <div class="customer-note small fst-italic text-muted" t-esc="line.customerNote"/>
+                                </t>
+                            </div>
+                            <div class="price">
+                                <t t-if="line.discount">
+                                    <span class="original-price" t-esc="props.formatCurrency(line.price_unit)"/>
+                                </t>
+                                <span t-esc="props.formatCurrency(line.price_unit_discounted || line.price_unit)"/>
+                            </div>
+                            <div class="total fw-bold" t-esc="props.formatCurrency(line.price_display)"/>
+                        </div>
+                    </t>
+                </div>
+
+                <!-- Summary Section -->
+                <div class="summary-section mt-3">
+                    <div class="summary-row">
+                        <span>إجمالي العناصر</span>
+                        <span t-esc="props.data.orderlines.length"/>
+                    </div>
+                    <div class="summary-row mt-2">
+                        <span>الإجمالي الفرعي</span>
+                        <span t-esc="props.formatCurrency(props.data.taxTotals.order_total - props.data.taxTotals.tax_amount_currency)"/>
+                    </div>
+                    <t t-if="props.data.total_discount">
+                        <div class="summary-row">
+                            <span>إجمالي الخصم</span>
+                            <span t-esc="props.formatCurrency(props.data.total_discount)"/>
+                        </div>
+                    </t>
+                    
+                    <div class="summary-row border-top border-dark pt-1 mt-1">
+                        <span>قيمة الضريبة</span>
+                        <span t-esc="props.formatCurrency(props.data.taxTotals.tax_amount_currency)"/>
+                    </div>
+                    <t t-foreach="props.data.taxTotals.subtotals" t-as="subtotal" t-key="subtotal.name">
+                        <t t-foreach="subtotal.tax_groups" t-as="tax_group" t-key="tax_group.id">
+                            <div class="summary-row small text-muted">
+                                <span t-esc="tax_group.group_name"/>
+                                <span t-esc="props.formatCurrency(tax_group.tax_amount_currency)"/>
+                            </div>
+                        </t>
+                    </t>
+
+                    <!-- Grand Total -->
+                    <div class="summary-row total-row my-3 px-2 py-3 d-flex align-items-center justify-content-between" style="background: #000; color: #fff; border-radius: 5px;">
+                        <span style="font-size: 1.2em;">الإجمالي (شامل الضريبة)</span>
+                        <span style="font-size: 1.5em; font-weight: 900;" t-esc="props.formatCurrency(props.data.taxTotals.order_total)"/>
+                    </div>
+                </div>
+
+                <!-- Payments -->
+                <div class="payments-section mt-2">
+                    <t t-foreach="props.data.paymentlines" t-as="line" t-key="line.id">
+                        <div class="payment-row mb-1">
+                            <span class="payment-name" t-esc="line.name"/>
+                            <span class="fw-bold" t-esc="props.formatCurrency(line.amount)"/>
+                        </div>
+                    </t>
+                </div>
+
+                <!-- Footer / QR Code -->
+                <div class="footer-section mt-4 text-center">
+                    <div class="footer-text fw-bold mb-3" t-if="props.data.footer" t-esc="props.data.footer"/>
+                    <div class="footer-text fw-bold mb-3" t-else="">We are happy with your visit</div>
+                    
+                    <div class="qr-container d-flex justify-content-center" t-if="props.data.pos_qr_code">
+                        <img t-att-src="props.data.pos_qr_code" style="width: 160px; height: 160px; border: 1px solid #eee; padding: 5px;"/>
+                    </div>
+                </div>
+                
+                <div class="text-center mt-4 small text-muted border-top pt-2">
+                    <p>Powered by Odoo</p>
+                </div>
+            </div>
+        </xpath>
+    </t>
+</templates>
