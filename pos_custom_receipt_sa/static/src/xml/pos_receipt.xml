@@ -58,23 +58,23 @@
 
                 <!-- Order Lines -->
                 <div class="order-lines">
-                    <t t-foreach="props.data.orderlines" t-as="line" t-key="line.id">
+                    <t t-foreach="props.data.orderlines" t-as="line" t-key="line.uuid || line_index">
                         <div class="line-item py-1" style="border-bottom: 1px dotted #ccc;">
                             <div class="qty-name">
                                 <span class="product-name" style="font-size: 1.05em;">
-                                    <t t-esc="line.qty"/>x <t t-esc="line.product_id?.display_name"/>
+                                    <t t-esc="line.qty"/>x <t t-esc="line.productName"/>
                                 </span>
                                 <t t-if="line.customerNote">
                                     <div class="customer-note small fst-italic text-muted" t-esc="line.customerNote"/>
                                 </t>
                             </div>
                             <div class="price">
-                                <t t-if="line.discount">
-                                    <span class="original-price" t-esc="props.formatCurrency(line.price_unit)"/>
+                                <t t-if="line.discount and line.discount !== '0'">
+                                    <span class="original-price" t-esc="line.oldUnitPrice || line.price_without_discount"/>
                                 </t>
-                                <span t-esc="props.formatCurrency(line.price_unit_discounted || line.price_unit)"/>
+                                <span t-esc="line.unitPrice"/>
                             </div>
-                            <div class="total fw-bold" t-esc="props.formatCurrency(line.price_display)"/>
+                            <div class="total fw-bold" t-esc="line.price"/>
                         </div>
                     </t>
                 </div>
@@ -118,7 +118,7 @@
 
                 <!-- Payments -->
                 <div class="payments-section mt-2">
-                    <t t-foreach="props.data.paymentlines" t-as="line" t-key="line.id">
+                    <t t-foreach="props.data.paymentlines" t-as="line" t-key="line_index">
                         <div class="payment-row mb-1">
                             <span class="payment-name" t-esc="line.name"/>
                             <span class="fw-bold" t-esc="props.formatCurrency(line.amount)"/>
