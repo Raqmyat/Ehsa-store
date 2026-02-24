@@ -97,13 +97,23 @@
 }
 
 .pos-receipt-sa .total-row {
-    background: #000 !important;
-    color: #fff !important;
+    background-color: #f8f9fa !important;
+    /* Off-white / الاوف وايت */
+    color: #000 !important;
     padding: 12px 8px !important;
     margin: 15px 0;
     border-radius: 4px;
+    border: 1px solid #000;
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
+}
+
+@media print {
+    .pos-receipt-sa .total-row {
+        background-color: #f8f9fa !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
 }
 
 .pos-receipt-sa .payment-row {
