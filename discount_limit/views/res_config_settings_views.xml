@@ -17,7 +17,7 @@
                     </div>
                     <div class="o_setting_right_pane">
                         <label for="limit_discount"
-                               string="Discount Limit"/>
+                               string="Limit the Discount"/>
                         <div class="row mt16" invisible="limit_discount==False">
                             <label string="Apply Discount Limit to"
                                    for="apply_discount_limit"

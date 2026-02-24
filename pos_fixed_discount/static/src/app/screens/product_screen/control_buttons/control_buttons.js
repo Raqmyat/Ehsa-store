@@ -51,7 +51,14 @@ patch(ControlButtons.prototype, {
                 return;
             }
 
-            selectedLine.set_discount(discountPercentage);
+            const result = selectedLine.set_discount(discountPercentage);
+
+            if (result && result.title && result.body) {
+                this.dialog.add(AlertDialog, {
+                    title: result.title,
+                    body: result.body,
+                });
+            }
 
             if (this.props.close) {
                 this.props.close();
