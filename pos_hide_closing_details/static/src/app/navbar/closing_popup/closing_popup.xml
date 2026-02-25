@@ -1,35 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates id="template" xml:space="preserve">
     <t t-inherit="point_of_sale.ClosePosPopup" t-inherit-mode="extension" xml:space="preserve">
-        <!-- Bulletproof Server Hiding using CSS Injection -->
+        <!-- Bulletproof Minimalist UI using CSS Injection -->
         <xpath expr="." position="inside">
             <style t-if="!canShowClosingDetails()">
-                /* 1. Hide the entire middle summary section and pos_hr overrides */
+                /* 1. Hide the entire top summary and all extra sections */
+                .total-orders,
                 .payment-methods-overview,
                 .PaymentMethodBreakdown,
                 .AccordionItem,
                 .accordion,
                 .accordion-item,
-                .total-orders,
-                /* 2. Hide specific financial elements by persistent classes */
-                .amount,
-                .cash-difference,
-                .fs-3,
-                .border-start,
-                .text-muted,
-                /* 3. Hide buttons by persistent classes (Daily Sale is the 'icon' button) */
-                .button.icon,
+                hr,
+                /* 2. Hide all non-essential footer actions */
+                .modal-footer .d-flex.gap-2:nth-child(2),
                 SaleDetailsButton,
-                /* 4. Hide all elements that might contain amounts in both languages */
-                .d-flex.justify-content-between {
+                /* 3. Ensure the Cash Count and Notes are the ONLY things visible */
+                .payment-methods-overview ~ div,
+                .notes-container {
+                    display: block !important;
+                }
+                /* 4. Blanket hide for anything else that might leak (amounts, differences) */
+                span[t-esc*='Currency'], .amount, .cash-difference, .fs-3 {
                     display: none !important;
                 }
-                /* 5. Keep the note and cash input containers visible */
-                .notes-container, .notes-container *, 
-                .cash-input, .cash-input *,
-                label[for="closingNotes"],
-                .closing-notes-container, .closing-notes-container * {
-                    display: flex !important;
+                /* 5. Force the main container to be clean */
+                .close-pos-popup .modal-body {
+                    padding-top: 20px !important;
                 }
             </style>
         </xpath>
