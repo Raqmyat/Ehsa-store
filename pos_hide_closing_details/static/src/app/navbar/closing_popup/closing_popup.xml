@@ -1,31 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates id="template" xml:space="preserve">
     <t t-inherit="point_of_sale.ClosePosPopup" t-inherit-mode="extension" xml:space="preserve">
-        <!-- 1. Hide Header Total -->
+        <!-- Hide Header Total -->
         <xpath expr="//div[hasclass('total-orders')]" position="attributes">
             <attribute name="t-if">canShowClosingDetails()</attribute>
         </xpath>
-
-        <!-- 2. Hide ALL sensitive info (any node containing amount/opening/diff in t-esc or t-value) -->
-        <!-- This is a blanket rule that catches everything regardless of structure -->
-        <xpath expr="//*[contains(@t-esc, 'amount') or contains(@t-esc, 'opening') or contains(@t-esc, 'diff') or contains(@t-value, 'diff') or contains(@t-value, 'amount')]" position="attributes">
+        
+        <!-- Hide All breakdown elements -->
+        <xpath expr="//div[hasclass('payment-methods-overview')]" position="attributes">
             <attribute name="t-if">canShowClosingDetails()</attribute>
         </xpath>
-
-        <!-- 3. Hide breakdown components and detail lines -->
-        <xpath expr="//PaymentMethodBreakdown" position="attributes">
-            <attribute name="t-if">canShowClosingDetails()</attribute>
-        </xpath>
-        <xpath expr="//*[hasclass('border-start')]" position="attributes">
-            <attribute name="t-if">canShowClosingDetails()</attribute>
-        </xpath>
-
-        <!-- 4. Hide Buttons (Daily Sale and Sale Details) -->
-        <xpath expr="//xpath[@t-on-click='downloadSalesReport'] | //button[@t-on-click='downloadSalesReport']" position="attributes">
-            <attribute name="t-if">canShowClosingDetails()</attribute>
-        </xpath>
-        <xpath expr="//SaleDetailsButton/.." position="attributes">
-            <attribute name="t-if">canShowClosingDetails()</attribute>
-        </xpath>
+        
+        <!-- The CSS will handle the rest via the .pos-hide-details class added in JS -->
     </t>
 </templates>

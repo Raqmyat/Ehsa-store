@@ -10,6 +10,7 @@
     'assets': {
         'point_of_sale._assets_pos': [
             'pos_hide_closing_details/static/src/app/**/*',
+            'pos_hide_closing_details/static/src/app/navbar/closing_popup/closing_popup.css',
         ],
     },
     'installable': True,

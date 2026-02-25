@@ -10,8 +10,16 @@ patch(ClosePosPopup, {
 
 patch(ClosePosPopup.prototype, {
     canShowClosingDetails() {
-        console.log("POS Hide Debug - can_show_closing_details:", this.props.can_show_closing_details);
-        console.log("POS Hide Debug - is_manager:", this.props.is_manager);
-        return this.props.can_show_closing_details;
+        const canShow = this.props.can_show_closing_details;
+        console.log("POS Hide Debug - Final Decision (can_show):", canShow);
+        return canShow;
+    },
+    get dialogProps() {
+        const props = super.dialogProps;
+        if (!this.canShowClosingDetails()) {
+            console.log("POS Hide Debug - Applying CSS Class 'pos-hide-details'");
+            props.contentClass = (props.contentClass || "") + " pos-hide-details";
+        }
+        return props;
     },
 });

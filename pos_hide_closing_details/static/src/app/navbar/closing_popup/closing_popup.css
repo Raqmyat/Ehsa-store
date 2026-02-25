@@ -1,0 +1,12 @@
+/* Nuclear hiding for POS Closing Popup */
+.pos-hide-details .total-orders,
+.pos-hide-details .payment-methods-overview,
+.pos-hide-details .PaymentMethodBreakdown,
+.pos-hide-details [t-on-click='downloadSalesReport'],
+.pos-hide-details SaleDetailsButton,
+.pos-hide-details .cash-difference,
+.pos-hide-details .amount,
+.pos-hide-details .fs-3,
+.pos-hide-details .border-start.ps-2 {
+    display: none !important;
+}
