@@ -1,48 +1,51 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates id="template" xml:space="preserve">
     <t t-inherit="point_of_sale.ClosePosPopup" t-inherit-mode="extension" xml:space="preserve">
-        <!-- Final Minimalist Hiding: Nuclear XPath + CSS injection -->
-        <xpath expr="." position="inside">
-            <style t-if="!canShowClosingDetails()">
-                /* Hide everything except the input and notes */
-                .total-orders,
-                .payment-methods-overview,
-                .PaymentMethodBreakdown,
-                .AccordionItem,
-                .accordion,
-                .accordion h4,
-                hr:first-of-type,
-                .modal-footer .d-flex.gap-2:nth-child(2),
-                SaleDetailsButton,
-                .opening-notes-container {
-                    display: none !important;
-                    visibility: hidden !important;
-                    height: 0 !important;
-                    padding: 0 !important;
-                    margin: 0 !important;
-                }
-                /* Clean spacing for the remaining elements */
-                .modal-body {
-                    padding-top: 10px !important;
-                }
-            </style>
-        </xpath>
-
-        <!-- Secondary layer: XPath hiding for structural reliability -->
+        <!-- 1. Hide Header Stats -->
         <xpath expr="//div[hasclass('total-orders')]" position="attributes">
             <attribute name="t-if">canShowClosingDetails()</attribute>
         </xpath>
+
+        <!-- 2. Hide Payment Overview (Standard) -->
         <xpath expr="//div[hasclass('payment-methods-overview')]" position="attributes">
             <attribute name="t-if">canShowClosingDetails()</attribute>
         </xpath>
-        <xpath expr="//hr" position="attributes">
+
+        <!-- 3. Hide pos_hr Payment Overview (inserted after) -->
+        <xpath expr="//t[@t-if='pos.config.module_pos_hr']" position="attributes">
+            <attribute name="t-if">pos.config.module_pos_hr and canShowClosingDetails()</attribute>
+        </xpath>
+
+        <!-- 4. Hide the first HR (Separator) -->
+        <xpath expr="//hr[1]" position="attributes">
             <attribute name="t-if">canShowClosingDetails()</attribute>
         </xpath>
+
+        <!-- 5. Hide Opening Note -->
         <xpath expr="//div[hasclass('opening-notes-container')]" position="attributes">
             <attribute name="t-if">canShowClosingDetails()</attribute>
         </xpath>
+
+        <!-- 6. Hide Secondary Footer Buttons (Cash In/Out, Daily Sale) -->
         <xpath expr="//t[@t-set-slot='footer']//div[hasclass('gap-2')][2]" position="attributes">
             <attribute name="t-if">canShowClosingDetails()</attribute>
+        </xpath>
+
+        <!-- 7. CSS Fallback (Nuclear but targeted) -->
+        <xpath expr="." position="inside">
+            <style t-if="!canShowClosingDetails()">
+                /* Hide any summary rows that might escape XPath */
+                .payment-methods-overview, 
+                .pos_hr_payments, 
+                .accordion, 
+                .AccordionItem {
+                    display: none !important;
+                }
+                /* Ensure our target elements are visible */
+                .cash-input, .fa-clone {
+                    display: inline-block !important;
+                }
+            </style>
         </xpath>
     </t>
 </templates>
