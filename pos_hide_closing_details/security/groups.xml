@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="group_show_closing_details" model="res.groups">
+        <field name="name">Show POS Closing Data</field>
+        <field name="category_id" ref="base.module_category_point_of_sale"/>
+    </record>
+</odoo>

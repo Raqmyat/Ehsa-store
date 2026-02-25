@@ -38,3 +38,9 @@ class HrEmployee(models.Model):
         data = super()._load_pos_data_fields(config_id)
         data += ['has_pos_discount_control']
         return data
+
+
+class HrEmployeePublic(models.Model):
+    _inherit = 'hr.employee.public'
+
+    has_pos_discount_control = fields.Boolean(related='employee_id.has_pos_discount_control', readonly=True)
