@@ -1,45 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates id="template" xml:space="preserve">
     <t t-inherit="point_of_sale.ClosePosPopup" t-inherit-mode="extension" xml:space="preserve">
-        <!-- Hide header total amount (hasclass is safe) -->
+        <!-- 1. Hide header total amount -->
         <xpath expr="//div[hasclass('total-orders')]" position="attributes">
             <attribute name="t-if">canShowClosingDetails()</attribute>
         </xpath>
 
-        <!-- Hide expected amount for cash -->
-        <xpath expr="//div[hasclass('payment-methods-overview')]//div[hasclass('d-flex') and hasclass('fs-3')]/span[2]" position="attributes">
+        <!-- 2. Hide Cash Expected Amount -->
+        <xpath expr="//span[contains(@t-esc, 'default_cash_details.amount')]/.." position="attributes">
             <attribute name="t-if">canShowClosingDetails()</attribute>
         </xpath>
 
-        <!-- Hide cash details (Opening, Payments, Cash In/Out) -->
-        <xpath expr="//div[hasclass('payment-methods-overview')]//div[hasclass('text-muted') and hasclass('border-start')]" position="attributes">
-             <attribute name="t-if">canShowClosingDetails()</attribute>
+        <!-- 3. Hide Cash Extra Details (Opening, Payments, Counted, Difference) -->
+        <!-- We target all divs inside payment-methods-overview that have border-start (the muted detail lines) -->
+        <xpath expr="//div[hasclass('payment-methods-overview')]//div[hasclass('border-start')]" position="attributes">
+            <attribute name="t-if">canShowClosingDetails()</attribute>
         </xpath>
+
+        <!-- 4. Hide PaymentMethodBreakdown (Cash In/Out details) -->
         <xpath expr="//PaymentMethodBreakdown" position="attributes">
-             <attribute name="t-if">canShowClosingDetails()</attribute>
-        </xpath>
-
-        <!-- Hide difference section for all payment methods -->
-        <xpath expr="//div[hasclass('payment-methods-overview')]//div[contains(@t-att-class, 'diff') or contains(@class, 'cash-difference')]" position="attributes">
-             <attribute name="t-if">canShowClosingDetails()</attribute>
-        </xpath>
-
-        <!-- Hide non-cash Expected Amount -->
-        <xpath expr="//div[@t-foreach='props.non_cash_payment_methods']//div[hasclass('fs-3')]/span[2]" position="attributes">
             <attribute name="t-if">canShowClosingDetails()</attribute>
         </xpath>
 
-        <!-- Hide all extra details for non-cash (Counted/Difference info) -->
-        <xpath expr="//div[@t-foreach='props.non_cash_payment_methods']//div[hasclass('text-muted')]" position="attributes">
+        <!-- 5. Hide Non-Cash Row (Name and Amount) -->
+        <xpath expr="//div[@t-foreach='props.non_cash_payment_methods']//div[hasclass('fs-3')]" position="attributes">
             <attribute name="t-if">canShowClosingDetails()</attribute>
         </xpath>
 
-        <!-- Hide Daily Sale button (Target by action instead of text) -->
+        <!-- 6. Hide Non-Cash Details (Counted and Difference for non-cash) -->
+        <xpath expr="//div[@t-foreach='props.non_cash_payment_methods']//div[hasclass('border-start')]" position="attributes">
+            <attribute name="t-if">canShowClosingDetails()</attribute>
+        </xpath>
+
+        <!-- 7. Hide Daily Sale and Sale Details buttons -->
         <xpath expr="//button[@t-on-click='downloadSalesReport']" position="attributes">
             <attribute name="t-if">canShowClosingDetails()</attribute>
         </xpath>
-        
-        <!-- Hide Sale Details Button -->
         <xpath expr="//SaleDetailsButton/.." position="attributes">
             <attribute name="t-if">canShowClosingDetails()</attribute>
         </xpath>

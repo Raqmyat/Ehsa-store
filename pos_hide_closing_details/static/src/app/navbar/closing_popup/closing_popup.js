@@ -10,6 +10,8 @@ patch(ClosePosPopup, {
 
 patch(ClosePosPopup.prototype, {
     canShowClosingDetails() {
+        console.log("POS Hide Debug - can_show_closing_details:", this.props.can_show_closing_details);
+        console.log("POS Hide Debug - is_manager:", this.props.is_manager);
         return this.props.can_show_closing_details;
     },
 });
