@@ -1,16 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates id="template" xml:space="preserve">
     <t t-inherit="point_of_sale.ClosePosPopup" t-inherit-mode="extension" xml:space="preserve">
-        <!-- Hide Header Total -->
-        <xpath expr="//div[hasclass('total-orders')]" position="attributes">
-            <attribute name="t-if">canShowClosingDetails()</attribute>
+        <!-- Bulletproof Server Hiding using CSS Injection -->
+        <xpath expr="." position="inside">
+            <style t-if="!canShowClosingDetails()">
+                /* Hide everything sensitive */
+                .total-orders, 
+                .payment-methods-overview, 
+                .PaymentMethodBreakdown, 
+                .cash-difference, 
+                .amount, 
+                .fs-3, 
+                .border-start.ps-2, 
+                [title*='Daily Sale'], 
+                [t-on-click*='downloadSalesReport'], 
+                SaleDetailsButton {
+                    display: none !important;
+                }
+            </style>
         </xpath>
-        
-        <!-- Hide All breakdown elements -->
-        <xpath expr="//div[hasclass('payment-methods-overview')]" position="attributes">
-            <attribute name="t-if">canShowClosingDetails()</attribute>
-        </xpath>
-        
-        <!-- The CSS will handle the rest via the .pos-hide-details class added in JS -->
     </t>
 </templates>
