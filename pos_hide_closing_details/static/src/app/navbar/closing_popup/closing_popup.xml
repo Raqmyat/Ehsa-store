@@ -1,33 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates id="template" xml:space="preserve">
     <t t-inherit="point_of_sale.ClosePosPopup" t-inherit-mode="extension" xml:space="preserve">
-        <!-- 1. Hide Header Total (Orders & Amount) -->
+        <!-- 1. Hide Header Total -->
         <xpath expr="//div[hasclass('total-orders')]" position="attributes">
             <attribute name="t-if">canShowClosingDetails()</attribute>
         </xpath>
 
-        <!-- 2. Hide ALL Expected Amounts and Opening Amounts -->
-        <!-- This targets all spans that show currency and are NOT 'Counted' -->
-        <xpath expr="//div[hasclass('payment-methods-overview')]//span[contains(@t-esc, 'amount') or contains(@t-esc, 'opening')]" position="attributes">
+        <!-- 2. Hide ALL sensitive info (any node containing amount/opening/diff in t-esc or t-value) -->
+        <!-- This is a blanket rule that catches everything regardless of structure -->
+        <xpath expr="//*[contains(@t-esc, 'amount') or contains(@t-esc, 'opening') or contains(@t-esc, 'diff') or contains(@t-value, 'diff') or contains(@t-value, 'amount')]" position="attributes">
             <attribute name="t-if">canShowClosingDetails()</attribute>
         </xpath>
 
-        <!-- 3. Hide all PaymentMethodBreakdown components -->
+        <!-- 3. Hide breakdown components and detail lines -->
         <xpath expr="//PaymentMethodBreakdown" position="attributes">
             <attribute name="t-if">canShowClosingDetails()</attribute>
         </xpath>
-
-        <!-- 4. Hide all Difference rows -->
-        <!-- We target spans by class or by content, covering both standard and pos_hr versions -->
-        <xpath expr="//span[hasclass('cash-difference')]/.." position="attributes">
-             <attribute name="t-if">canShowClosingDetails()</attribute>
-        </xpath>
-        <xpath expr="//div[hasclass('payment-methods-overview')]//div[contains(@t-att-class, 'diff') or contains(@class, 'diff')]" position="attributes">
-             <attribute name="t-if">canShowClosingDetails()</attribute>
+        <xpath expr="//*[hasclass('border-start')]" position="attributes">
+            <attribute name="t-if">canShowClosingDetails()</attribute>
         </xpath>
 
-        <!-- 5. Hide Daily Sale and Sale Details Buttons -->
-        <xpath expr="//button[@t-on-click='downloadSalesReport']" position="attributes">
+        <!-- 4. Hide Buttons (Daily Sale and Sale Details) -->
+        <xpath expr="//xpath[@t-on-click='downloadSalesReport'] | //button[@t-on-click='downloadSalesReport']" position="attributes">
             <attribute name="t-if">canShowClosingDetails()</attribute>
         </xpath>
         <xpath expr="//SaleDetailsButton/.." position="attributes">
