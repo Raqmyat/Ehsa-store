@@ -3,7 +3,7 @@
     'version': '1.0',
     'category': 'Point of Sale',
     'summary': 'Hide expected amounts and differences in POS Closing Register popup.',
-    'depends': ['point_of_sale'],
+    'depends': ['point_of_sale', 'pos_hr'],
     'data': [
         'security/groups.xml',
     ],
