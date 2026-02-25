@@ -4,18 +4,32 @@
         <!-- Bulletproof Server Hiding using CSS Injection -->
         <xpath expr="." position="inside">
             <style t-if="!canShowClosingDetails()">
-                /* Hide everything sensitive */
-                .total-orders, 
-                .payment-methods-overview, 
-                .PaymentMethodBreakdown, 
-                .cash-difference, 
-                .amount, 
-                .fs-3, 
-                .border-start.ps-2, 
-                [title*='Daily Sale'], 
-                [t-on-click*='downloadSalesReport'], 
-                SaleDetailsButton {
+                /* 1. Hide the entire middle summary section and pos_hr overrides */
+                .payment-methods-overview,
+                .PaymentMethodBreakdown,
+                .AccordionItem,
+                .accordion,
+                .accordion-item,
+                .total-orders,
+                /* 2. Hide specific financial elements by persistent classes */
+                .amount,
+                .cash-difference,
+                .fs-3,
+                .border-start,
+                .text-muted,
+                /* 3. Hide buttons by persistent classes (Daily Sale is the 'icon' button) */
+                .button.icon,
+                SaleDetailsButton,
+                /* 4. Hide all elements that might contain amounts in both languages */
+                .d-flex.justify-content-between {
                     display: none !important;
+                }
+                /* 5. Keep the note and cash input containers visible */
+                .notes-container, .notes-container *, 
+                .cash-input, .cash-input *,
+                label[for="closingNotes"],
+                .closing-notes-container, .closing-notes-container * {
+                    display: flex !important;
                 }
             </style>
         </xpath>
