@@ -1,34 +1,48 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates id="template" xml:space="preserve">
     <t t-inherit="point_of_sale.ClosePosPopup" t-inherit-mode="extension" xml:space="preserve">
-        <!-- Bulletproof Minimalist UI using CSS Injection -->
+        <!-- Final Minimalist Hiding: Nuclear XPath + CSS injection -->
         <xpath expr="." position="inside">
             <style t-if="!canShowClosingDetails()">
-                /* 1. Hide the entire top summary and all extra sections */
+                /* Hide everything except the input and notes */
                 .total-orders,
                 .payment-methods-overview,
                 .PaymentMethodBreakdown,
                 .AccordionItem,
                 .accordion,
-                .accordion-item,
-                hr,
-                /* 2. Hide all non-essential footer actions */
+                .accordion h4,
+                hr:first-of-type,
                 .modal-footer .d-flex.gap-2:nth-child(2),
                 SaleDetailsButton,
-                /* 3. Ensure the Cash Count and Notes are the ONLY things visible */
-                .payment-methods-overview ~ div,
-                .notes-container {
-                    display: block !important;
-                }
-                /* 4. Blanket hide for anything else that might leak (amounts, differences) */
-                span[t-esc*='Currency'], .amount, .cash-difference, .fs-3 {
+                .opening-notes-container {
                     display: none !important;
+                    visibility: hidden !important;
+                    height: 0 !important;
+                    padding: 0 !important;
+                    margin: 0 !important;
                 }
-                /* 5. Force the main container to be clean */
-                .close-pos-popup .modal-body {
-                    padding-top: 20px !important;
+                /* Clean spacing for the remaining elements */
+                .modal-body {
+                    padding-top: 10px !important;
                 }
             </style>
+        </xpath>
+
+        <!-- Secondary layer: XPath hiding for structural reliability -->
+        <xpath expr="//div[hasclass('total-orders')]" position="attributes">
+            <attribute name="t-if">canShowClosingDetails()</attribute>
+        </xpath>
+        <xpath expr="//div[hasclass('payment-methods-overview')]" position="attributes">
+            <attribute name="t-if">canShowClosingDetails()</attribute>
+        </xpath>
+        <xpath expr="//hr" position="attributes">
+            <attribute name="t-if">canShowClosingDetails()</attribute>
+        </xpath>
+        <xpath expr="//div[hasclass('opening-notes-container')]" position="attributes">
+            <attribute name="t-if">canShowClosingDetails()</attribute>
+        </xpath>
+        <xpath expr="//t[@t-set-slot='footer']//div[hasclass('gap-2')][2]" position="attributes">
+            <attribute name="t-if">canShowClosingDetails()</attribute>
         </xpath>
     </t>
 </templates>
