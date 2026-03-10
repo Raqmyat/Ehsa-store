@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_pos_session_form_status" model="ir.ui.view">
+        <field name="name">pos.session.form.view.status</field>
+        <field name="model">pos.session</field>
+        <field name="inherit_id" ref="point_of_sale.view_pos_session_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='cash_register_balance_end_real']" position="after">
+                <field name="balance_status" 
+                       decoration-success="balance_status == 'متوازن'" 
+                       decoration-danger="balance_status == 'غير متوازن'" 
+                       widget="badge"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_pos_session_tree_status" model="ir.ui.view">
+        <field name="name">pos.session.tree.view.status</field>
+        <field name="model">pos.session</field>
+        <field name="inherit_id" ref="point_of_sale.view_pos_session_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='state']" position="after">
+                <field name="balance_status" 
+                       decoration-success="balance_status == 'متوازن'" 
+                       decoration-danger="balance_status == 'غير متوازن'" 
+                       widget="badge"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>
