@@ -42,10 +42,13 @@
                     display: none !important;
                 }
                 /* Ensure our target elements are visible */
-                .cash-input, .fa-clone {
+                .cash-input {
                     display: inline-block !important;
                 }
             </style>
         </xpath>
+
+        <!-- 8. Remove Autofill Button (.fa-clone) -->
+        <xpath expr="//button[hasclass('fa-clone')]" position="replace"/>
     </t>
 </templates>

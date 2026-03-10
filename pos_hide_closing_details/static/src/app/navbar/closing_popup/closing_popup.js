@@ -22,4 +22,8 @@ patch(ClosePosPopup.prototype, {
         }
         return props;
     },
+    async confirm() {
+        // Bypass all difference checks and warning messages
+        await this.closeSession();
+    },
 });
